@@ -1,0 +1,153 @@
+{% extends "common.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="block">
+             <div id="yongdu-chart" style="height:700px"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js2 %}
+    <script src="https://cdn.bootcss.com/echarts/4.0.2/echarts.js"></script>
+    <script type="text/javascript">
+        var chart = echarts.init(document.getElementById('yongdu-chart'));
+        var option = {
+            title : {
+                x: 'center',
+                y: 'top',
+                text: '主城九区一天24h的拥堵情况',
+                subtext: '数据由sense6提供',
+                textStyle : {
+                    color: '#fff'
+                }
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                x: 'center',
+                y: 'bottom',
+                data:['渝中','渝北','江北','九龙坡','沙坪坝','巴南','北碚','大渡口'],
+                textStyle : {
+                    color: '#fff'
+                }
+            },
+            toolbox: {
+                show : false,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: 'bar'},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : true,
+                    data :  function (){
+                        var list = [];
+                        for (var i = 5; i <= 23; i++) {
+                            list.push( i + 'h');
+                        }
+                        return list;
+                    }(),
+                   name:'时间',
+                   axisLine: {
+                        lineStyle: {
+                            type: 'solid',
+                            color: '#fff',//左边线的颜色
+                            width:'2'//坐标线的宽度
+                        }
+                    },
+                   axisLabel: {
+                        textStyle: {
+                            color: '#fff',//坐标值de具体的颜色
+
+                        }
+                    }
+                }
+
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name:'拥堵系数',
+                    axisLine: {
+                        lineStyle: {
+                            type: 'solid',
+                            color: '#fff',//左边线的颜色
+                            width:'2'//坐标线的宽度
+                        }
+                    },
+                   axisLabel: {
+                        formatter: '{value}',
+                        textStyle: {
+                            color: '#fff',//坐标值de具体的颜色
+
+                        }
+                    }
+                }
+            ],
+            series : [
+                {
+                    name:'渝中',
+                    type:'line',
+                   itemStyle : { normal: {label : {show: false, position: 'top'}}},
+                    data:[9.524568941,21.45513024,24.90321071,53.10354971,24.63143002,39.63236861,23.21647906,9.101323221,12.5257599,9.521975949,12.59709292,12.81774228,30.48,34.61197617,37.60182864,68.74580011,64.38919114,7.419294283,20.78212004],
+                },
+                {
+                    name:'渝北',
+                    type:'line',
+                    itemStyle : { normal: {label : {show: false, position: 'top'}}},
+                    data:[22.74911185,15.54546193,46.24401794,59.92526494,22.45421197,29.76146089,15.16840999,9.524534236,11.58970409,12.45352476,9.36185519,9.636897763,65.43996212,34.29452018,56.76134451,53.90255656,48.33318574,9.497097986,17.3622379],
+                },
+              {
+                    name:'江北',
+                    type:'line',
+                    itemStyle : { normal: {label : {show: false, position: 'top'}}},
+                    data:[27.08177746,29.40737172,48.83990762100,32.00214971,22.91873079,15.47791852,9.577359068,7.865981487,9.892919976,11.64850546,11.44199569,76.3007526,22.54072186,35.73046521,61.4145018,48.21571055,61.99040744,41.66010105],
+                },
+              {
+                    name:'九龙坡',
+                    type:'line',
+                    itemStyle : { normal: {label : {show: false, position: 'top'}}},
+                    data:[60.06563303,22.19850276,45.58890895,59.18037406,27.60845537,22.4820094,42.15044055,10.36573455,10.55864375,10.94971913,11.13606071,11.25958785,29.69673582,14.1040326,43.5145011,53.28931061,43.18818549,9.137460439,6.36214555],
+                },
+              {
+                    name:'沙坪坝',
+                    type:'line',
+                    itemStyle : { normal: {label : {show: false, position: 'top'}}},
+                    data:[32.54744159,33.29603337,31.77869121,54.76643681,64.57740898,30.44060008,27.21071536,7.476594565,8.096838316,8.249573642,8.73056406,13.40347182,67.45114912,46.62107265,45.08627678,59.39572081,44.32245009,23.63208709,13.37741807],
+                },
+              {
+                    name:'巴南',
+                    type:'line',
+                    itemStyle : { normal: {label : {show: false, position: 'top'}}},
+                    data:[15.05092148,47.72037903,28.40972589,51.72092062,25.65747064,37.35805557,36.99934252,11.925155,12.08307371,7.973155361,13.18552841,12.28212442,60.61175856,31.01154129,46.76073922,33.77774107,66.03993589,31.29761758,21.41742361],
+
+                },
+              {
+                    name:'北碚',
+                    type:'line',
+                    itemStyle : { normal: {label : {show: false, position: 'top'}}},
+                    data:[37.21333583,29.64263951,28.27530849,49.72866308,13.80401981,46.13239993,26.27075915,11.08824924,9.43558266,9.942469274,6.790143079,13.72257579,41.20578395,29.60407283,47.03872517,41.19980869,51.68824151,35.01279122,5.207964459],
+
+                },
+              {
+                    name:'大渡口',
+                    type:'line',
+                    itemStyle : { normal: {label : {show: false, position: 'top'}}},
+                    data:[17.58664316,20.4566939,46.15444541,63.89469154,66.24149717,57.46276143,21.19087697,10.16075593,8.728812866,7.560375164,6.776076793,10.08623371,58.06797302,31.73564003,26.35531821,59.02619909,33.73490123,19.00616072,43.65283686],
+                }
+
+            ]
+        };
+
+        chart.setOption(option);
+    </script>
+{% endblock js2 %}

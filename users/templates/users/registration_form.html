@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+    <form class="form-horizontal templatemo-contact-form-1" role="form" action="." method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="col-md-12">
+                <h1 class="margin-bottom-15">注册账户</h1>
+            </div>
+        </div>
+        <div class="form-group">
+              <div class="col-md-12">
+                <label for="username" class="control-label">用户名</label>
+                <div class="templatemo-input-icon-container">
+                    <i class="fa fa-user"></i>
+                    {{ form.username }}
+                </div>
+                   <label for="username" class="control-label">{{ form.username.errors }}</label>
+              </div>
+            </div>
+
+        <div class="form-group">
+              <div class="col-md-12">
+                <label for="email" class="control-label">邮箱</label>
+                <div class="templatemo-input-icon-container">
+                    <i class="fa fa-envelope"></i>
+                    {{ form.email }}
+                </div>
+                   <label for="email" class="control-label">{{ form.email.errors }}</label>
+              </div>
+            </div>
+
+        <div class="form-group">
+              <div class="col-md-12">
+                <label for="password" class="control-label">密码</label>
+                <div class="templatemo-input-icon-container">
+                    <i class="fa fa-lock"></i>
+                    {{ form.password1 }}
+                </div>
+                   <label for="password" class="control-label">{{ form.password1.errors }}</label>
+              </div>
+            </div>
+
+        <div class="form-group">
+              <div class="col-md-12">
+                <label for="password" class="control-label">再次输入密码</label>
+                <div class="templatemo-input-icon-container">
+                    <i class="fa fa-lock"></i>
+                    {{ form.password2 }}
+                </div>
+                  <label for="password" class="control-label">{{ form.password2.errors }}</label>
+              </div>
+            </div>
+        <div class="form-group">
+          <div class="col-md-12">
+              <a href="/accounts/login" class="text-center">登录</a>
+            <input type="submit" value="注册账户" class="btn btn-success pull-right">
+          </div>
+        </div>
+
+    </form>
+{% endblock %}

@@ -1,0 +1,743 @@
+{% extends "common.html" %}
+{% load staticfiles %}
+{% block js1 %}
+    <script type="text/javascript" src="{% static "lib/jquery-1.7.2.min.js" %}"></script>
+{% endblock js1 %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="block">
+             <div id="zhizhu-chart" style="height:700px"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js2 %}
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <script type="text/javascript">
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        require(
+                [
+                    'echarts',
+                    'echarts/chart/map'
+                ],
+                function (ec) {
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart = ec.init(document.getElementById('zhizhu-chart'));
+                    var cityMap = {
+                        "重庆": "chongqing9",
+                    };
+                    var mapType = [];
+                    var mapGeoData = require('echarts/util/mapData/params');
+                    for (var city in cityMap) {
+                         mapType.push(city);
+                         // 自定义扩展图表类型
+                         mapGeoData.params[city] = {
+                             getGeoJson: (function (c) {
+                                 var geoJsonName = cityMap[c];
+                                 return function (callback) {
+                                     $.getJSON('/static/data/map/json/province/' + geoJsonName + '.json', callback);
+                                 }
+                             })(city)
+                         }
+                    }
+                    var option = {
+                        backgroundColor: '#00',
+                        color: ['gold','aqua','lime'],
+                        title : {
+                            text: '职住分离分析（归一化数值扩大100倍）',
+                            subtext:'数据由sense6提供',
+                            x:'center',
+                            textStyle : {
+                                color: '#fff'
+                            }
+                        },
+                        tooltip : {
+                            show: true,
+                            trigger: 'item',
+                            formatter: '{b}'
+                        },
+                        legend: {
+                            orient: 'horizontal',
+                            x: 'center',
+                            y: 'bottom',
+                            data:['大渡口区', '渝中区', '江北区', '沙坪坝区', '九龙坡区', '南岸区', '北碚区', '渝北区', '巴南区'],
+                            selectedMode: 'single',
+                            selected:{
+                                '渝中区' : false,
+                                '江北区' : false,
+                                '沙坪坝区' : false,
+                                '九龙坡区' : false,
+                                '南岸区' : false,
+                                '北碚区' : false,
+                                '渝北区' : false,
+                                '巴南区' : false
+                            },
+                            textStyle : {
+                                color: '#fff'
+                            }
+                        },
+                        toolbox: {
+                            show : true,
+                            orient : 'vertical',
+                            x: 'right',
+                            y: 'center',
+                            feature : {
+                                dataView : {show: true, readOnly: false},
+                                restore : {show: true},
+                                saveAsImage : {show: true}
+                            }
+                        },
+                        dataRange: {
+                            min : 0,
+                            max : 100,
+                            x: 'right',
+                            y: 'top',
+                            calculable : true,
+                            color: ['#ff3333', 'orange', 'yellow','lime','aqua'],
+                            textStyle:{
+                                color:'#fff'
+                            }
+                        },
+                        series : [
+                            //all
+                            {
+                                name: 'all',
+                                type: 'map',    //地图类型
+                                roam: false,      //鼠标滚轮缩放
+                                hoverable: false, //鼠标经过高亮
+                                mapType: '重庆',
+                                itemStyle:{
+                                    normal:{
+                                        borderColor:'rgba(100,149,237,1)',
+                                        borderWidth:0.5,
+                                        label: {
+                                            show: true,
+                                            textStyle: {
+                                                color: '#ff0000'
+                                            }
+                                        } ,
+                                        areaStyle:{
+                                            color: '#1b1b1b'
+                                        }
+                                    }
+                                },
+                                data:[],
+                                geoCoord: {
+                                    '大渡口区':[106.4905,29.4214],
+                                    '渝中区':[106.5344,29.5477],
+                                    '江北区':[106.8311,29.6191],
+                                    '沙坪坝区':[106.3696,29.6191],
+                                    '九龙坡区':[106.3586,29.4049],
+                                    '南岸区':[106.6663,29.5367],
+                                    '北碚区':[106.5674,29.8883],
+                                    '渝北区':[106.7212,29.8499],
+                                    '巴南区':[106.7322,29.4214]
+                                }
+                            },
+                            //大渡口区
+                            {
+                                name: '大渡口区',
+                                type: 'map',
+                                mapType: '重庆',
+                                data:[],
+                                markLine : {
+                                    smooth:true,
+                                    effect : {
+                                        show: true,
+                                        scaleSize: 1,
+                                        period: 30,
+                                        color: '#fff',
+                                        shadowBlur: 10
+                                    },
+                                    itemStyle : {
+                                        normal: {
+                                            borderWidth:1,
+                                            lineStyle: {
+                                                type: 'solid',
+                                                shadowBlur: 10
+                                            }
+                                        }
+                                    },
+                                    data : [
+                                        [{name:'大渡口区'}, {name:'大渡口区',value:20}],
+                                        [{name:'大渡口区'}, {name:'渝中区',value:46}],
+                                        [{name:'大渡口区'}, {name:'江北区',value:100}],
+                                        [{name:'大渡口区'}, {name:'沙坪坝区',value:90}],
+                                        [{name:'大渡口区'}, {name:'九龙坡区',value:46}],
+                                        [{name:'大渡口区'}, {name:'南岸区',value:80}],
+                                        [{name:'大渡口区'}, {name:'北碚区',value:54}],
+                                        [{name:'大渡口区'}, {name:'渝北区',value:32}],
+                                        [{name:'大渡口区'}, {name:'巴南区',value:26}]
+                                    ]
+                                },
+                                markPoint : {
+                                    symbol:'emptyCircle',
+                                    symbolSize : function (v){
+                                        return 10 + v/10
+                                    },
+                                    effect : {
+                                        show: true,
+                                        shadowBlur : 0
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            label:{show:false}
+                                        },
+                                        emphasis: {
+                                            label:{position:'center'}
+                                        }
+                                    },
+                                    data : [
+                                        {name:'大渡口区',value:20},
+                                        {name:'渝中区',value:46},
+                                        {name:'江北区',value:100},
+                                        {name:'沙坪坝区',value:90},
+                                        {name:'九龙坡区',value:46},
+                                        {name:'南岸区',value:80},
+                                        {name:'北碚区',value:54},
+                                        {name:'渝北区',value:32},
+                                        {name:'巴南区',value:26}
+                                    ]
+                                }
+                            },
+                            //渝中区
+                            {
+                                name: '渝中区',
+                                type: 'map',
+                                mapType: '重庆',
+                                data:[],
+                                markLine : {
+                                    smooth:true,
+                                    effect : {
+                                        show: true,
+                                        scaleSize: 1,
+                                        period: 30,
+                                        color: '#fff',
+                                        shadowBlur: 10
+                                    },
+                                    itemStyle : {
+                                        normal: {
+                                            borderWidth:1,
+                                            lineStyle: {
+                                                type: 'solid',
+                                                shadowBlur: 10
+                                            }
+                                        }
+                                    },
+                                    data : [
+                                        [{name:'渝中区'},{name:'大渡口区',value:82}],
+                                        [{name:'渝中区'},{name:'渝中区',value:92}],
+                                        [{name:'渝中区'},{name:'江北区',value:64}],
+                                        [{name:'渝中区'},{name:'沙坪坝区',value:40}],
+                                        [{name:'渝中区'},{name:'九龙坡区',value:10}],
+                                        [{name:'渝中区'},{name:'南岸区',value:44}],
+                                        [{name:'渝中区'},{name:'北碚区',value:80}],
+                                        [{name:'渝中区'},{name:'渝北区',value:8}],
+                                        [{name:'渝中区'},{name:'巴南区',value:46}]
+                                    ]
+                                },
+                                markPoint : {
+                                    symbol:'emptyCircle',
+                                    symbolSize : function (v){
+                                        return 10 + v/10
+                                    },
+                                    effect : {
+                                        show: true,
+                                        shadowBlur : 0
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            label:{show:false}
+                                        },
+                                        emphasis: {
+                                            label:{position:'center'}
+                                        }
+                                    },
+                                    data : [
+                                        {name:'大渡口区',value:82},
+                                        {name:'渝中区',value:92},
+                                        {name:'江北区',value:64},
+                                        {name:'沙坪坝区',value:40},
+                                        {name:'九龙坡区',value:10},
+                                        {name:'南岸区',value:44},
+                                        {name:'北碚区',value:80},
+                                        {name:'渝北区',value:8},
+                                        {name:'巴南区',value:46}
+                                    ]
+                                }
+                            },
+                            //江北区
+                            {
+                                name: '江北区',
+                                type: 'map',
+                                mapType: '重庆',
+                                data:[],
+                                markLine : {
+                                    smooth:true,
+                                    effect : {
+                                        show: true,
+                                        scaleSize: 1,
+                                        period: 30,
+                                        color: '#fff',
+                                        shadowBlur: 10
+                                    },
+                                    itemStyle : {
+                                        normal: {
+                                            borderWidth:1,
+                                            lineStyle: {
+                                                type: 'solid',
+                                                shadowBlur: 10
+                                            }
+                                        }
+                                    },
+                                    data : [
+                                        [{name:'江北区'},{name:'大渡口区',value:32}],
+                                        [{name:'江北区'},{name:'渝中区',value:90}],
+                                        [{name:'江北区'},{name:'江北区',value:18}],
+                                        [{name:'江北区'},{name:'沙坪坝区',value:14}],
+                                        [{name:'江北区'},{name:'九龙坡区',value:10}],
+                                        [{name:'江北区'},{name:'南岸区',value:0}],
+                                        [{name:'江北区'},{name:'北碚区',value:64}],
+                                        [{name:'江北区'},{name:'渝北区',value:72}],
+                                        [{name:'江北区'},{name:'巴南区',value:62}]
+                                    ]
+                                },
+                                markPoint : {
+                                    symbol:'emptyCircle',
+                                    symbolSize : function (v){
+                                        return 10 + v/10
+                                    },
+                                    effect : {
+                                        show: true,
+                                        shadowBlur : 0
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            label:{show:false}
+                                        },
+                                        emphasis: {
+                                            label:{position:'center'}
+                                        }
+                                    },
+                                    data : [
+                                        {name:'大渡口区',value:32},
+                                        {name:'渝中区',value:90},
+                                        {name:'江北区',value:18},
+                                        {name:'沙坪坝区',value:14},
+                                        {name:'九龙坡区',value:10},
+                                        {name:'南岸区',value:0},
+                                        {name:'北碚区',value:64},
+                                        {name:'渝北区',value:72},
+                                        {name:'巴南区',value:62}
+                                    ]
+                                }
+                            },
+                            //沙坪坝区
+                            {
+                                name: '沙坪坝区',
+                                type: 'map',
+                                mapType: '重庆',
+                                data:[],
+                                markLine : {
+                                    smooth:true,
+                                    effect : {
+                                        show: true,
+                                        scaleSize: 1,
+                                        period: 30,
+                                        color: '#fff',
+                                        shadowBlur: 10
+                                    },
+                                    itemStyle : {
+                                        normal: {
+                                            borderWidth:1,
+                                            lineStyle: {
+                                                type: 'solid',
+                                                shadowBlur: 10
+                                            }
+                                        }
+                                    },
+                                    data : [
+                                            [{name:'沙坪坝区'},{name:'大渡口区',value:44}],
+                                            [{name:'沙坪坝区'},{name:'江北区',value:14}],
+                                            [{name:'沙坪坝区'},{name:'渝中区',value:50}],
+                                            [{name:'沙坪坝区'},{name:'沙坪坝区',value:82}],
+                                            [{name:'沙坪坝区'},{name:'九龙坡区',value:70}],
+                                            [{name:'沙坪坝区'},{name:'南岸区',value:28}],
+                                            [{name:'沙坪坝区'},{name:'北碚区',value:88}],
+                                            [{name:'沙坪坝区'},{name:'渝北区',value:8}],
+                                            [{name:'沙坪坝区'},{name:'巴南区',value:14}]
+                                    ]
+                                },
+                                markPoint : {
+                                    symbol:'emptyCircle',
+                                    symbolSize : function (v){
+                                        return 10 + v/10
+                                    },
+                                    effect : {
+                                        show: true,
+                                        shadowBlur : 0
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            label:{show:false}
+                                        },
+                                        emphasis: {
+                                            label:{position:'center'}
+                                        }
+                                    },
+                                    data : [
+                                        {name:'大渡口区',value:44},
+                                        {name:'渝中区',value:14},
+                                        {name:'江北区',value:50},
+                                        {name:'沙坪坝区',value:82},
+                                        {name:'九龙坡区',value:70},
+                                        {name:'南岸区',value:28},
+                                        {name:'北碚区',value:88},
+                                        {name:'渝北区',value:8},
+                                        {name:'巴南区',value:14}
+                                    ]
+                                }
+                            },
+                            //九龙坡区
+                            {
+                                name: '九龙坡区',
+                                type: 'map',
+                                mapType: '重庆',
+                                data:[],
+                                markLine : {
+                                    smooth:true,
+                                    effect : {
+                                        show: true,
+                                        scaleSize: 1,
+                                        period: 30,
+                                        color: '#fff',
+                                        shadowBlur: 10
+                                    },
+                                    itemStyle : {
+                                        normal: {
+                                            borderWidth:1,
+                                            lineStyle: {
+                                                type: 'solid',
+                                                shadowBlur: 10
+                                            }
+                                        }
+                                    },
+                                    data : [
+                                        [{name:'九龙坡区'},{name:'大渡口区',value:56}],
+                                        [{name:'九龙坡区'},{name:'江北区',value:84}],
+                                        [{name:'九龙坡区'},{name:'渝中区',value:30}],
+                                        [{name:'九龙坡区'},{name:'沙坪坝区',value:44}],
+                                        [{name:'九龙坡区'},{name:'九龙坡区',value:96}],
+                                        [{name:'九龙坡区'},{name:'南岸区',value:52}],
+                                        [{name:'九龙坡区'},{name:'北碚区',value:98}],
+                                        [{name:'九龙坡区'},{name:'渝北区',value:24}],
+                                        [{name:'九龙坡区'},{name:'巴南区',value:2}]
+                                    ]
+                                },
+                                markPoint : {
+                                    symbol:'emptyCircle',
+                                    symbolSize : function (v){
+                                        return 10 + v/10
+                                    },
+                                    effect : {
+                                        show: true,
+                                        shadowBlur : 0
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            label:{show:false}
+                                        },
+                                        emphasis: {
+                                            label:{position:'center'}
+                                        }
+                                    },
+                                    data : [
+                                        {name:'大渡口区',value:56},
+                                        {name:'渝中区',value:84},
+                                        {name:'江北区',value:30},
+                                        {name:'沙坪坝区',value:44},
+                                        {name:'九龙坡区',value:96},
+                                        {name:'南岸区',value:52},
+                                        {name:'北碚区',value:98},
+                                        {name:'渝北区',value:24},
+                                        {name:'巴南区',value:2}
+                                    ]
+                                }
+                            },
+                            //南岸区
+                            {
+                                name: '南岸区',
+                                type: 'map',
+                                mapType: '重庆',
+                                data:[],
+                                markLine : {
+                                    smooth:true,
+                                    effect : {
+                                        show: true,
+                                        scaleSize: 1,
+                                        period: 30,
+                                        color: '#fff',
+                                        shadowBlur: 10
+                                    },
+                                    itemStyle : {
+                                        normal: {
+                                            borderWidth:1,
+                                            lineStyle: {
+                                                type: 'solid',
+                                                shadowBlur: 10
+                                            }
+                                        }
+                                    },
+                                    data : [
+                                        [{name:'南岸区'},{name:'大渡口区',value:80}],
+                                        [{name:'南岸区'},{name:'江北区',value:96}],
+                                        [{name:'南岸区'},{name:'渝中区',value:82}],
+                                        [{name:'南岸区'},{name:'沙坪坝区',value:12}],
+                                        [{name:'南岸区'},{name:'九龙坡区',value:82}],
+                                        [{name:'南岸区'},{name:'南岸区',value:46}],
+                                        [{name:'南岸区'},{name:'北碚区',value:48}],
+                                        [{name:'南岸区'},{name:'渝北区',value:24}],
+                                        [{name:'南岸区'},{name:'巴南区',value:36}]
+                                    ]
+                                },
+                                markPoint : {
+                                    symbol:'emptyCircle',
+                                    symbolSize : function (v){
+                                        return 10 + v/10
+                                    },
+                                    effect : {
+                                        show: true,
+                                        shadowBlur : 0
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            label:{show:false}
+                                        },
+                                        emphasis: {
+                                            label:{position:'center'}
+                                        }
+                                    },
+                                    data : [
+                                        {name:'大渡口区',value:80},
+                                        {name:'渝中区',value:96},
+                                        {name:'江北区',value:82},
+                                        {name:'沙坪坝区',value:12},
+                                        {name:'九龙坡区',value:82},
+                                        {name:'南岸区',value:46},
+                                        {name:'北碚区',value:48},
+                                        {name:'渝北区',value:24},
+                                        {name:'巴南区',value:36}
+                                    ]
+                                }
+                            },
+                            //北碚区
+                            {
+                                name: '北碚区',
+                                type: 'map',
+                                mapType: '重庆',
+                                data:[],
+                                markLine : {
+                                    smooth:true,
+                                    effect : {
+                                        show: true,
+                                        scaleSize: 1,
+                                        period: 30,
+                                        color: '#fff',
+                                        shadowBlur: 10
+                                    },
+                                    itemStyle : {
+                                        normal: {
+                                            borderWidth:1,
+                                            lineStyle: {
+                                                type: 'solid',
+                                                shadowBlur: 10
+                                            }
+                                        }
+                                    },
+                                    data : [
+                                        [{name:'北碚区'},{name:'大渡口区',value:26}],
+                                        [{name:'北碚区'},{name:'江北区',value:64}],
+                                        [{name:'北碚区'},{name:'渝中区',value:58}],
+                                        [{name:'北碚区'},{name:'沙坪坝区',value:56}],
+                                        [{name:'北碚区'},{name:'九龙坡区',value:54}],
+                                        [{name:'北碚区'},{name:'南岸区',value:94}],
+                                        [{name:'北碚区'},{name:'北碚区',value:6}],
+                                        [{name:'北碚区'},{name:'渝北区',value:74}],
+                                        [{name:'北碚区'},{name:'巴南区',value:18}]
+                                    ]
+                                },
+                                markPoint : {
+                                    symbol:'emptyCircle',
+                                    symbolSize : function (v){
+                                        return 10 + v/10
+                                    },
+                                    effect : {
+                                        show: true,
+                                        shadowBlur : 0
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            label:{show:false}
+                                        },
+                                        emphasis: {
+                                            label:{position:'center'}
+                                        }
+                                    },
+                                    data : [
+                                        {name:'大渡口区',value:26},
+                                        {name:'渝中区',value:64},
+                                        {name:'江北区',value:58},
+                                        {name:'沙坪坝区',value:56},
+                                        {name:'九龙坡区',value:54},
+                                        {name:'南岸区',value:94},
+                                        {name:'北碚区',value:6},
+                                        {name:'渝北区',value:74},
+                                        {name:'巴南区',value:18}
+                                    ]
+                                }
+                            },
+                            //渝北区
+                            {
+                                name: '渝北区',
+                                type: 'map',
+                                mapType: '重庆',
+                                data:[],
+                                markLine : {
+                                    smooth:true,
+                                    effect : {
+                                        show: true,
+                                        scaleSize: 1,
+                                        period: 30,
+                                        color: '#fff',
+                                        shadowBlur: 10
+                                    },
+                                    itemStyle : {
+                                        normal: {
+                                            borderWidth:1,
+                                            lineStyle: {
+                                                type: 'solid',
+                                                shadowBlur: 10
+                                            }
+                                        }
+                                    },
+                                    data : [
+                                        [{name:'渝北区'},{name:'大渡口区',value:62}],
+                                        [{name:'渝北区'},{name:'江北区',value:50}],
+                                        [{name:'渝北区'},{name:'渝中区',value:50}],
+                                        [{name:'渝北区'},{name:'沙坪坝区',value:40}],
+                                        [{name:'渝北区'},{name:'九龙坡区',value:74}],
+                                        [{name:'渝北区'},{name:'南岸区',value:60}],
+                                        [{name:'渝北区'},{name:'北碚区',value:80}],
+                                        [{name:'渝北区'},{name:'渝北区',value:80}],
+                                        [{name:'渝北区'},{name:'巴南区',value:22}]
+                                    ]
+                                },
+                                markPoint : {
+                                    symbol:'emptyCircle',
+                                    symbolSize : function (v){
+                                        return 10 + v/10
+                                    },
+                                    effect : {
+                                        show: true,
+                                        shadowBlur : 0
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            label:{show:false}
+                                        },
+                                        emphasis: {
+                                            label:{position:'center'}
+                                        }
+                                    },
+                                    data : [
+                                        {name:'大渡口区',value:62},
+                                        {name:'渝中区',value:50},
+                                        {name:'江北区',value:50},
+                                        {name:'沙坪坝区',value:40},
+                                        {name:'九龙坡区',value:74},
+                                        {name:'南岸区',value:60},
+                                        {name:'北碚区',value:80},
+                                        {name:'渝北区',value:80},
+                                        {name:'巴南区',value:22}
+                                    ]
+                                }
+                            },
+                            //巴南区
+                            {
+                                name: '巴南区',
+                                type: 'map',
+                                mapType: '重庆',
+                                data:[],
+                                markLine : {
+                                    smooth:true,
+                                    effect : {
+                                        show: true,
+                                        scaleSize: 1,
+                                        period: 30,
+                                        color: '#fff',
+                                        shadowBlur: 10
+                                    },
+                                    itemStyle : {
+                                        normal: {
+                                            borderWidth:1,
+                                            lineStyle: {
+                                                type: 'solid',
+                                                shadowBlur: 10
+                                            }
+                                        }
+                                    },
+                                    data : [
+                                        [{name:'巴南区'},{name:'大渡口区',value:100}],
+                                        [{name:'巴南区'},{name:'江北区',value:70}],
+                                        [{name:'巴南区'},{name:'渝中区',value:96}],
+                                        [{name:'巴南区'},{name:'沙坪坝区',value:80}],
+                                        [{name:'巴南区'},{name:'九龙坡区',value:94}],
+                                        [{name:'巴南区'},{name:'南岸区',value:32}],
+                                        [{name:'巴南区'},{name:'北碚区',value:42}],
+                                        [{name:'巴南区'},{name:'渝北区',value:82}],
+                                        [{name:'巴南区'},{name:'巴南区',value:66}]
+                                    ]
+                                },
+                                markPoint : {
+                                    symbol:'emptyCircle',
+                                    symbolSize : function (v){
+                                        return 10 + v/10
+                                    },
+                                    effect : {
+                                        show: true,
+                                        shadowBlur : 0
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            label:{show:false}
+                                        },
+                                        emphasis: {
+                                            label:{position:'center'}
+                                        }
+                                    },
+                                    data : [
+                                        {name:'大渡口区',value:100},
+                                        {name:'渝中区',value:70},
+                                        {name:'江北区',value:96},
+                                        {name:'沙坪坝区',value:80},
+                                        {name:'九龙坡区',value:94},
+                                        {name:'南岸区',value:32},
+                                        {name:'北碚区',value:42},
+                                        {name:'渝北区',value:82},
+                                        {name:'巴南区',value:66}
+                                    ]
+                                }
+                            }
+                        ]
+                    };
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
+                }
+        );
+    </script>
+{% endblock js2 %}

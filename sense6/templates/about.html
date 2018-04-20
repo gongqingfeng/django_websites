@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<head>
+    <title>Sense6 | 新数据环境下, 重庆市主城九区城市单元的动态测度及决策支持系统方案</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load staticfiles %}
+    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/bootstrap-theme.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/templatemo_style.css" %}" rel="stylesheet">
+
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    <link href="{% static "css/main.css" %}" rel="stylesheet">
+
+
+    <style type="text/css">
+        ul li{
+        list-style: none;
+
+        }
+        .brand { font-family: georgia, serif; }
+        .brand .first {
+            color: #ccc;
+            font-style: italic;
+        }
+        .brand .second {
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="templatemo-bg-image-1">
+
+   {% if request.user.is_authenticated %}
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div class="container">
+            <!-- Logo and responsive toggle -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand brand" href="/"><span class="first">CQU</span> <span class="second">Sense6</span></a>
+            </div>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    <li>
+                        <a href="/sense6/zhizhu">职住分离</a>
+                    </li>
+                    <li>
+                        <a href="/sense6/yongdu">拥堵情况</a>
+                    </li>
+                    <li>
+                        <a href="/sense6/wuran">空气污染</a>
+                    </li>
+
+                    <li>
+                        <a href="/sense6/shenghuo">生活便利性</a>
+                    </li>
+                    <li>
+                        <a href="/sense6/zonghe">综合评价</a>
+                    </li>
+                    <li>
+                        <a href="/sense6/about">关于我们</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hi: {{ user }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="about-us">
+                            <li><a href="/accounts/password_change">修改密码</a></li>
+                            <li><a href="/accounts/logout/">登出账户</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+        <!-- Testimonials Section
+        ================================================== -->
+    <section id="testimonials">
+
+            <div class="row">
+                <div class="col-twelve">
+                    <h1>Sense6 团队成员介绍</h1>
+                </div>
+            </div>
+
+          <div class="row flex-container">
+
+             <div id="testimonial-slider" class="flexslider">
+
+                <ul class="slides">
+
+                   <li>
+                    <div class="testimonial-author">
+                            <img src="/static/images/avatars/yuantian.jpg" alt="Author image">
+                            <div class="author-info">
+                                袁甜 | 队长
+                                <span class="position">重庆大学在读研究生 | 城市建设与管理</span>
+                            </div>
+                      </div>
+
+                      <p>
+                      具有创业实践经验，并曾先后多次参与城市大数据应用系统的功能定位与业务落地的横向项目与实习工作。
+                      </p>
+                    </li> <!-- /slide -->
+
+                   <li>
+
+                    <div class="testimonial-author">
+                            <img src="/static/images/avatars/chendingding.jpg" alt="Author image">
+                            <div class="author-info">
+                                陈定定 | 队员
+                                <span>重庆大学在读博士生 | 多智能体系统与分布式约束优化</span>
+                            </div>
+                      </div>
+
+                      <p>
+                      精通各种编程语言，数据挖掘，机器学习算法。具有丰富的实践与项目经历。
+                      </p>
+
+                   </li> <!-- /slide -->
+
+                    <li>
+
+                    <div class="testimonial-author">
+                            <img src="/static/images/avatars/liupengkun.jpg" alt="Author image">
+                            <div class="author-info">
+                                刘鹏坤 | 队员
+                                <span>重庆大学在读研究生 | 智能体与深度强化学习</span>
+                            </div>
+                      </div>
+
+                      <p>
+                      曾赴台湾国立大学CAE实验室交流学习，先后实习于ARUP、JLL等房地产咨询公司，参与贵阳大数据中心策划。
+                      </p>
+
+                   </li> <!-- /slide -->
+
+                    <li>
+
+                    <div class="testimonial-author">
+                            <img src="/static/images/avatars/chenchunjiang.jpg" alt="Author image">
+                            <div class="author-info">
+                                陈春江 | 队员
+                                <span>重庆大学在读研究生 | GIS与城市经济地理</span>
+                            </div>
+                      </div>
+
+                      <p>
+                      理论基础扎实，空间计算相关理论与实践功底深厚，学术成果丰富，城市大数据方向已发表中文核心1篇。
+                      </p>
+
+                   </li> <!-- /slide -->
+
+                    <li>
+
+                    <div class="testimonial-author">
+                            <img src="/static/images/avatars/wuchengke.jpg" alt="Author image">
+                            <div class="author-info">
+                                吴承科 | 队员
+                                <span>重庆大学在读研究生 | 智能建造与模拟仿真</span>
+                            </div>
+                      </div>
+
+                      <p>
+                      曾公派赴新加坡国立大学交换学习，赴阿尔及利亚中建海外事业部实习，并曾受聘赴澳洲科廷大学研究助理，从事相关研究工作。
+                      </p>
+
+                   </li> <!-- /slide -->
+
+                   <li>
+
+                    <div class="testimonial-author">
+                            <img src="/static/images/avatars/gaodaiheng.jpg" alt="Author image">
+                            <div class="author-info">
+                                高岱恒 | 队员
+                                <span>北京工业大学在读研究生 | 数据科学</span>
+                            </div>
+                      </div>
+
+                      <p>
+                      Kaggle比赛，IBM人工智能医疗大赛中均取得较好排名，先后实习于中科院自动化所NLP组、爱奇艺音视频编解码组以及Airdoc机器学习算法工程师。
+                      </p>
+
+                   </li> <!-- /slide -->
+
+                    <li>
+
+                    <div class="testimonial-author">
+                            <img src="/static/images/avatars/gongqingfeng.jpg" alt="Author image">
+                            <div class="author-info">
+                                龚清峰 | 队员
+                                <span>重庆大学在读本科生 | 编程、可视化</span>
+                            </div>
+                      </div>
+
+                      <p>
+                      活跃于各大技术论坛，精通c语言、汇编、java、android编程、python等，熟悉javascript、html、css。
+                      </p>
+
+                   </li> <!-- /slide -->
+
+                </ul> <!-- /slides -->
+
+             </div> <!-- /testimonial-slider -->
+
+          </div> <!-- /flex-container -->
+
+        </section> <!-- /testimonials -->
+
+
+    <script type="text/javascript" src="{% static "js/jquery-1.11.3.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+    {% else %}
+        <script language="JavaScript" type="text/javascript">
+            window.location.href = "/accounts/login/"
+        </script>
+    {% endif %}
+</body>
+</html>
