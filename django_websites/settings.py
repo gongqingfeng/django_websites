@@ -107,9 +107,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 AUTH_USER_MODEL = 'users.User'
 
 USERS_CREATE_SUPERUSER = DEBUG
-USERS_SUPERUSER_USERNAME = 'admin'
-USERS_SUPERUSER_EMAIL = '894237294@qq.com'
-USERS_SUPERUSER_PASSWORD = '19970907'
+USERS_SUPERUSER_EMAIL = '***@qq.com'
+USERS_SUPERUSER_PASSWORD = '***'
 
 USERS_REGISTRATION_OPEN = True
 
@@ -135,28 +134,15 @@ USERS_CHECK_PASSWORD_COMPLEXITY = True
 USERS_SPAM_PROTECTION = False  # important!
 
 #  ---------------------------------------------------------
-'''
-#  QQ Email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.qq.com'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = '894237294@qq.com'
-EMAIL_HOST_PASSWORD = 'pqchuihvxqgebdba'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = '894237294@qq.com'
-EMAIL_FROM = 'Tencent<894237294@qq.com>'
-'''
-
-
 #  Sohu Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sohu.com'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'gongqingfeng1996@sohu.com'
-EMAIL_HOST_PASSWORD = '1314Lmx20150609'
+EMAIL_HOST_USER = '***@sohu.com'
+EMAIL_HOST_PASSWORD = '***'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'gongqingfeng1996@sohu.com'
-EMAIL_FROM = 'Sohu<gongqingfeng1996@sohu.com>'
+DEFAULT_FROM_EMAIL = '***@sohu.com'
+EMAIL_FROM = 'Sohu<***@sohu.com>'
 #  ---------------------------------------------------------
 
 
